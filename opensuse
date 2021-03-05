@@ -6,3 +6,4 @@ RUN zypper dup -y && \
       openmpi-devel fftw-devel && \
     zypper clean
 USER kokkos
+ENV PATH=${PATH}${PATH:+:}/usr/lib64/mpi/gcc/openmpi2/bin
