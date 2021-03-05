@@ -1,0 +1,7 @@
+ARG TAG=latest
+FROM ghcr.io/kokkos/ci-containers/fedora:${TAG}
+
+RUN ( sudo dnf -y update || sudo dnf -y update ) && \
+    sudo dnf -y install \
+      openmpi-devel fftw-devel && \
+    sudo dnf clean all
