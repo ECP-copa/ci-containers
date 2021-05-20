@@ -4,7 +4,7 @@ FROM ghcr.io/kokkos/ci-containers/fedora:${TAG}
 USER root
 RUN ( dnf -y update || dnf -y update ) && \
     dnf -y install \
-      openmpi-devel fftw-devel && \
+      openmpi-devel fftw-devel doxgen && \
     dnf clean all
 USER kokkos
 ENV PATH=${PATH}${PATH:+:}/usr/lib64/openmpi/bin
