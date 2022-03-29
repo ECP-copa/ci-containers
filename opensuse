@@ -3,7 +3,7 @@ FROM ghcr.io/kokkos/ci-containers/opensuse:latest
 USER root
 RUN zypper dup -y && \
     zypper install -y \
-      openmpi-devel fftw-devel valgrind && \
+      openmpi-devel fftw-devel valgrind gtest && \
     zypper clean
 USER kokkos
 ENV PATH=${PATH}${PATH:+:}/usr/lib64/mpi/gcc/openmpi2/bin
