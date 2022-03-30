@@ -6,7 +6,25 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
     sudo apt-get install -y \
-       libopenmpi-dev libfftw3-dev valgrind libsilo-dev libgtest-dev && \
+       libopenmpi-dev libfftw3-dev valgrind libsilo-dev && \
     sudo apt-get purge --autoremove -y && \
     sudo rm -rf /var/lib/apt/lists/*
+
+# Install Googletest
+ENV GTEST_DIR=/opt/gtest
+ARG GTEST_VERSION=release-1.11.0
+RUN GTEST_URL=https://github.com/google/googletest/archive/${GTEST_VERSION}.tar.gz && \
+    GTEST_ARCHIVE=gtest-${GTEST_VERSION}.tar.gz && \
+    SCRATCH_DIR=/scratch && mkdir -p ${SCRATCH_DIR} && cd ${SCRATCH_DIR} && \
+    wget --quiet ${GTEST_URL} --output-document=${GTEST_ARCHIVE} && \
+    mkdir -p gtest && \
+    tar -xf ${GTEST_ARCHIVE} -C gtest --strip-components=1 && \
+    cd gtest && \
+    mkdir -p build && cd build && \
+    cmake \
+      -D CMAKE_INSTALL_PREFIX=${GTEST_DIR} \
+    .. && \
+    make -j${NPROCS} install && \
+    rm -rf ${SCRATCH_DIR}
+
 USER kokkos
