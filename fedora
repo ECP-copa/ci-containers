@@ -1,10 +1,13 @@
 ARG TAG=latest
 FROM ghcr.io/kokkos/ci-containers/fedora:${TAG}
 
+ARG MPI=yes
+
 USER root
 RUN ( dnf -y update || dnf -y update ) && \
     dnf -y install \
-      openmpi-devel fftw-devel doxygen valgrind libasan gtest-devel && \
+      fftw-devel doxygen valgrind libasan gtest-devel && \
+      ( test "${MPI}" != "yes" || dnf -y install openmpi-devel ) && \
     dnf clean all
 
 USER kokkos

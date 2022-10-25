@@ -22,6 +22,7 @@ jobs:
           - {dockerfile: 'ubuntu',   tag: 'devel',            build_args: 'TAG=devel', continue-on-error: 'true'}
           - {dockerfile: 'opensuse', tag: 'latest'}
           - {dockerfile: 'fedora',   tag: 'intel',            build_args: 'TAG=intel'}
+          - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout out code
