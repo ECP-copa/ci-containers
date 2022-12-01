@@ -6,7 +6,7 @@ ARG MPI=yes
 USER root
 RUN ( dnf -y update || dnf -y update ) && \
     dnf -y install \
-      fftw-devel doxygen valgrind libasan gtest-devel && \
+      fftw-devel doxygen valgrind libasan gtest-devel hdf5-devel && \
       ( test "${MPI}" != "yes" || dnf -y install openmpi-devel ) && \
     dnf clean all
 
