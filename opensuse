@@ -3,7 +3,7 @@ FROM ghcr.io/kokkos/ci-containers/opensuse:latest
 USER root
 RUN zypper dup -y && \
     zypper install -y \
-      openmpi-devel fftw-devel valgrind gtest gmock hdf5-devel && \
+      openmpi-devel fftw-devel valgrind gtest gmock hdf5-openmpi-devel && \
     zypper clean
 
 USER kokkos
