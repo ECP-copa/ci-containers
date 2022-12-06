@@ -1,6 +1,6 @@
 FROM ghcr.io/kokkos/ci-containers/opensuse:latest
 
-ARGS MPI=openmpi2
+ARG MPI=openmpi2
 
 USER root
 RUN zypper dup -y && \
