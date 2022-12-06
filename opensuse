@@ -1,10 +1,12 @@
 FROM ghcr.io/kokkos/ci-containers/opensuse:latest
 
+ARGS MPI=openmpi2
+
 USER root
 RUN zypper dup -y && \
     zypper install -y \
-      openmpi-devel fftw-devel valgrind gtest gmock hdf5-openmpi-devel && \
+      ${MPI}-devel fftw-devel valgrind gtest gmock hdf5-${MPI}-hpc-devel && \
     zypper clean
 
 USER kokkos
-ENV PATH=${PATH}${PATH:+:}/usr/lib64/mpi/gcc/openmpi2/bin
+ENV PATH=${PATH}${PATH:+:}/usr/lib64/mpi/gcc/${MPI}/bin
