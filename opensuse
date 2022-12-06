@@ -5,7 +5,7 @@ ARG MPI=openmpi2
 USER root
 RUN zypper dup -y && \
     zypper install -y \
-      ${MPI}-devel fftw-devel valgrind gtest gmock hdf5-${MPI}-hpc-devel && \
+      ${MPI}-devel fftw-devel valgrind gtest gmock hdf5-${MPI}-devel && \
     zypper clean
 
 USER kokkos
