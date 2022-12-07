@@ -6,8 +6,8 @@ ARG MPI=yes
 USER root
 RUN ( dnf -y update || dnf -y update ) && \
     dnf -y install \
-      fftw-devel doxygen valgrind libasan gtest-devel hdf5-devel && \
-      ( test "${MPI}" != "yes" || dnf -y install openmpi-devel ) && \
+      fftw-devel doxygen valgrind libasan gtest-devel && \
+      ( test "${MPI}" != "yes" || dnf -y install openmpi-devel hdf5-openmpi-devel  ) && \
     dnf clean all
 
 USER kokkos
