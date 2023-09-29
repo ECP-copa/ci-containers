@@ -23,6 +23,7 @@ jobs:
           - {dockerfile: 'opensuse', tag: 'latest'}
           - {dockerfile: 'fedora',   tag: 'intel',            build_args: 'TAG=intel'}
           - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
+          - {dockerfile: 'e4s-rocm', tag: 'latest',           build_args: 'TAG=latest', continue-on-error: 'true'}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout out code
