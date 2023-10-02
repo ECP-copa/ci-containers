@@ -9,6 +9,10 @@ on:
   schedule:
     - cron:  '0 5 * * FRI'
 
+concurrency:
+  group: ${ {github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{github.event_name == 'pull_request'}}
+
 jobs:
   CI:
     continue-on-error: ${{ matrix.config.continue-on-error == 'true' }}
@@ -23,6 +27,7 @@ jobs:
           - {dockerfile: 'opensuse', tag: 'latest'}
           - {dockerfile: 'fedora',   tag: 'intel',            build_args: 'TAG=intel'}
           - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
+          - {dockerfile: 'e4s-rocm', tag: 'latest',           build_args: 'TAG=latest', continue-on-error: 'true'}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout out code
