@@ -1,0 +1,11 @@
+ARG TAG=latest
+FROM docker.io/rocm/dev-ubuntu-20.04:${TAG}
+
+USER root
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y \
+       make git vim wget cmake libopenmpi-dev libfftw3-dev libgtest-dev libhdf5-openmpi-dev && \
+    apt-get purge --autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
