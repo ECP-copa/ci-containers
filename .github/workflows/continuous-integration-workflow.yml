@@ -28,6 +28,7 @@ jobs:
           - {dockerfile: 'fedora',   tag: 'intel',            build_args: 'TAG=intel'}
           - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
           - {dockerfile: 'rocm',     tag: 'latest',           continue-on-error: 'true'}
+          - {dockerfile: 'cuda',     tag: '12.2.0',           continue-on-error: 'true'}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout out code
