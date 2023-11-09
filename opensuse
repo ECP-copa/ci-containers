@@ -1,11 +1,11 @@
 FROM ghcr.io/kokkos/ci-containers/opensuse:latest
 
-ARG MPI=openmpi2
+ARG MPI=openmpi4
 
 USER root
 RUN zypper dup -y && \
     zypper install -y \
-      ${MPI}-devel fftw-devel valgrind gtest gmock hdf5-${MPI}-devel && \
+      ${MPI}-devel fftw3-devel valgrind gtest gmock hdf5-${MPI}-devel && \
     zypper clean
 
 USER kokkos
