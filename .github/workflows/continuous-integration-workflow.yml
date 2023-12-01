@@ -25,7 +25,7 @@ jobs:
           - {dockerfile: 'ubuntu',   tag: 'rolling',          build_args: 'TAG=rolling'}
           - {dockerfile: 'ubuntu',   tag: 'devel',            build_args: 'TAG=devel', continue-on-error: 'true'}
           - {dockerfile: 'opensuse', tag: 'latest'}
-          - {dockerfile: 'fedora',   tag: 'intel',            build_args: 'TAG=intel'}
+          - {dockerfile: 'fedora',   tag: 'intel',            build_args: 'TAG=intel,INTEL=yes'}
           - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
           - {dockerfile: 'rocm',     tag: 'latest',           continue-on-error: 'true'}
           - {dockerfile: 'cuda',     tag: '12.2.0',           continue-on-error: 'true'}
@@ -41,11 +41,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Convert build_args
+        id: build_args
+        run: |
+          echo "args<<EOF" >> $GITHUB_OUTPUT
+          echo ${{ matrix.config.build_args }} | sed 's/,/\n/g' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
       - name: Build and Push Docker images for Github Container Registry
         uses: docker/build-push-action@v3
         with:
           tags: ghcr.io/ecp-copa/ci-containers/${{ matrix.config.dockerfile }}:${{ matrix.config.tag }}
           file: ${{ matrix.config.dockerfile }}
-          build-args: ${{ matrix.config.build_args }}
+          build-args: ${{ steps.build_args.outputs.args }}
           pull: true
           push: ${{ github.event_name == 'push' ||  github.event_name == 'schedule' }}
