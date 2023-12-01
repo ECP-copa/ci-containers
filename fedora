@@ -9,7 +9,7 @@ RUN ( dnf -y update || dnf -y update ) && \
     dnf -y install \
       fftw-devel doxygen valgrind libasan gtest-devel && \
       ( test "${MPI}" != "yes" || dnf -y install openmpi-devel hdf5-openmpi-devel  ) && \
-      ( test "${INTEL}" != "yes" || dnf -y install intel-oneapi-mkl-devel ) && \
+      ( test "${INTEL}" != "yes" || dnf -y install intel-oneapi-mkl-devel intel-oneapi-compiler-dpcpp-cpp ) && \
     dnf clean all
 
 USER kokkos
