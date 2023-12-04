@@ -25,7 +25,7 @@ jobs:
           - {dockerfile: 'ubuntu',   tag: 'rolling',          build_args: 'TAG=rolling'}
           - {dockerfile: 'ubuntu',   tag: 'devel',            build_args: 'TAG=devel', continue-on-error: 'true'}
           - {dockerfile: 'opensuse', tag: 'latest'}
-          - {dockerfile: 'fedora',   tag: 'intel',            build_args: 'TAG=intel,INTEL=yes'}
+          - {dockerfile: 'ubuntu',   tag: 'intel',            build_args: 'TAG=intel'}
           - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
           - {dockerfile: 'rocm',     tag: 'latest',           continue-on-error: 'true'}
           - {dockerfile: 'cuda',     tag: '12.2.0',           continue-on-error: 'true'}
