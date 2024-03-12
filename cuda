@@ -6,6 +6,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
-       make git vim emacs wget cmake libopenmpi-dev libfftw3-dev libgtest-dev libhdf5-openmpi-dev && \
+       make git vim emacs wget cmake libopenmpi-dev libfftw3-dev libgtest-dev libhdf5-openmpi-dev bzip2 && \
     apt-get purge --autoremove -y && \
     rm -rf /var/lib/apt/lists/*

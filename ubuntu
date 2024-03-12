@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
     sudo apt-get install -y \
-       libopenmpi-dev libfftw3-dev valgrind libsilo-dev libgtest-dev libhdf5-openmpi-dev && \
+       libopenmpi-dev libfftw3-dev valgrind libsilo-dev libgtest-dev libhdf5-openmpi-dev bzip2 && \
     ( test "${INTEL}" != "yes" || sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic ) && \
     sudo apt-get purge --autoremove -y && \
     sudo rm -rf /var/lib/apt/lists/*
