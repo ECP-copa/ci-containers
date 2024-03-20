@@ -14,3 +14,6 @@ RUN sudo apt-get update && \
     sudo rm -rf /var/lib/apt/lists/*
 
 USER kokkos
+RUN if [ "${INTEL}" = "yes" ]; then \
+  icpx --version; \
+fi
