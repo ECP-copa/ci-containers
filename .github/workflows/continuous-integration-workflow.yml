@@ -23,7 +23,7 @@ jobs:
           - {dockerfile: 'fedora',   tag: 'latest-arm64',     arch: 'arm64'}
           - {dockerfile: 'fedora',   tag: 'rawhide',          build_args: 'TAG=rawhide', continue-on-error: 'true'}
           - {dockerfile: 'ubuntu',   tag: 'latest-amd64'}
-          - {dockerfile: 'ubuntu',   tag: 'latest-arm64'      arch: 'arm64'}
+          - {dockerfile: 'ubuntu',   tag: 'latest-arm64',     arch: 'arm64'}
           - {dockerfile: 'ubuntu',   tag: 'rolling',          build_args: 'TAG=rolling'}
           - {dockerfile: 'ubuntu',   tag: 'devel',            build_args: 'TAG=devel', continue-on-error: 'true'}
           - {dockerfile: 'opensuse', tag: 'latest'}
