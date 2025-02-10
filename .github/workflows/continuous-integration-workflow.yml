@@ -31,7 +31,7 @@ jobs:
           - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
           - {dockerfile: 'rocm',     tag: 'latest',           continue-on-error: 'true'}
           - {dockerfile: 'cuda',     tag: '12.2.0',           continue-on-error: 'true'}
-    runs-on: ${{ matrix.config.arm == 'true' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.config.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     steps:
       - name: Checkout out code
         uses: actions/checkout@v4
