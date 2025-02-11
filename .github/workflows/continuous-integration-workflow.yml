@@ -19,9 +19,11 @@ jobs:
     strategy:
       matrix:
         config:
-          - {dockerfile: 'fedora',   tag: 'latest'}
+          - {dockerfile: 'fedora',   tag: 'latest-amd64'}
+          - {dockerfile: 'fedora',   tag: 'latest-arm64',     arch: 'arm64'}
           - {dockerfile: 'fedora',   tag: 'rawhide',          build_args: 'TAG=rawhide', continue-on-error: 'true'}
-          - {dockerfile: 'ubuntu',   tag: 'latest'}
+          - {dockerfile: 'ubuntu',   tag: 'latest-amd64'}
+          - {dockerfile: 'ubuntu',   tag: 'latest-arm64',     arch: 'arm64'}
           - {dockerfile: 'ubuntu',   tag: 'rolling',          build_args: 'TAG=rolling'}
           - {dockerfile: 'ubuntu',   tag: 'devel',            build_args: 'TAG=devel', continue-on-error: 'true'}
           - {dockerfile: 'opensuse', tag: 'latest'}
@@ -29,7 +31,7 @@ jobs:
           - {dockerfile: 'fedora',   tag: 'nompi',            build_args: 'MPI=no'}
           - {dockerfile: 'rocm',     tag: 'latest',           continue-on-error: 'true'}
           - {dockerfile: 'cuda',     tag: '12.2.0',           continue-on-error: 'true'}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.config.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     steps:
       - name: Checkout out code
         uses: actions/checkout@v4
@@ -48,10 +50,36 @@ jobs:
           echo ${{ matrix.config.build_args }} | sed 's/,/\n/g' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       - name: Build and Push Docker images for Github Container Registry
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           tags: ghcr.io/ecp-copa/ci-containers/${{ matrix.config.dockerfile }}:${{ matrix.config.tag }}
           file: ${{ matrix.config.dockerfile }}
           build-args: ${{ steps.build_args.outputs.args }}
           pull: true
+          push: ${{ github.event_name == 'push' ||  github.event_name == 'schedule' }}
+
+  merge-docker-manifest:
+    runs-on: ubuntu-latest
+    needs: CI
+    strategy:
+        matrix:
+          config:
+            - {dockerfile: 'fedora',   tag: 'latest'}
+            - {dockerfile: 'ubuntu',   tag: 'latest'}
+    env:
+      docker-tag: ghcr.io/ecp-copa/ci-containers/${{ matrix.config.dockerfile }}:${{ matrix.config.tag }}
+    steps:
+      - name: Login to Github Container Registry
+        if: ${{ github.event_name == 'push' ||  github.event_name == 'schedule' }}
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create and push manifest images to Github Container Registry
+        if: ${{ github.event_name == 'push' ||  github.event_name == 'schedule' }}
+        uses: Noelware/docker-manifest-action@master
+        with:
+          inputs: ${{ env.docker-tag }}
+          images: ${{ env.docker-tag }}-amd64,${{ env.docker-tag }}-arm64
           push: ${{ github.event_name == 'push' ||  github.event_name == 'schedule' }}
